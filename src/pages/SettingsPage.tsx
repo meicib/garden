@@ -1,10 +1,10 @@
 import React from 'react';
 import { Container, Typography, Box, Divider } from '@mui/material';
-import SheetConfig from '../components/settings/SheetConfig';
-import { SheetService } from '../services/SheetService';
+import GoogleSheetsConfig from '../components/settings/GoogleSheetsConfig';
+import { GoogleSheetsService } from '../services/GoogleSheetsService';
 
 const SettingsPage: React.FC = () => {
-  const isConfigured = SheetService.isConfigured();
+  const isConfigured = GoogleSheetsService.isConfigured();
   
   return (
     <Container maxWidth="sm" sx={{ py: 3 }}>
@@ -18,11 +18,11 @@ const SettingsPage: React.FC = () => {
         </Typography>
         <Typography variant="body2" color="text.secondary" paragraph>
           {isConfigured 
-            ? 'Your garden tracker is connected to Google Sheets via Sheet.Best.' 
-            : 'Connect your garden tracker to Google Sheets for data persistence.'}
+            ? 'Your garden tracker is connected to Google Sheets.' 
+            : 'Connect your garden tracker directly to Google Sheets for data persistence.'}
         </Typography>
         <Divider sx={{ mb: 2 }} />
-        <SheetConfig />
+        <GoogleSheetsConfig />
       </Box>
     </Container>
   );

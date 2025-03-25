@@ -6,7 +6,7 @@ import Layout from './components/Layout';
 import BedsPage from './pages/BedsPage';
 import BedDetailPage from './pages/BedDetailPage';
 import SettingsPage from './pages/SettingsPage';
-import { SheetService } from './services/SheetService';
+import { GoogleSheetsService } from './services/GoogleSheetsService';
 
 // Reset default styles
 import './App.css';
@@ -14,9 +14,9 @@ import './App.css';
 function App() {
   const [isConfigured, setIsConfigured] = useState<boolean | null>(null);
   
-  // Check if Sheet.Best is configured
+  // Check if Google Sheets is configured
   useEffect(() => {
-    setIsConfigured(SheetService.isConfigured());
+    setIsConfigured(GoogleSheetsService.isConfigured());
   }, []);
   
   return (

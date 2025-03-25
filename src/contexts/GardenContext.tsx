@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { GardenBed, GardenActivity } from '../types';
-import { SheetService } from '../services/SheetService';
+import { GoogleSheetsService } from '../services/GoogleSheetsService';
 
 interface GardenContextType {
   beds: GardenBed[];
@@ -24,14 +24,14 @@ const fallbackBeds: GardenBed[] = [
   {
     id: '1',
     name: 'Tomato Bed',
-    notes: 'South facing, good drainage',
+    notes: 'Good drainage',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
   {
     id: '2',
     name: 'Herb Garden',
-    notes: 'Partial shade, needs more water',
+    notes: 'Partial shade',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -75,11 +75,11 @@ export const GardenProvider = ({ children }: GardenProviderProps) => {
     setError(null);
     try {
       // Fetch beds
-      const bedsData = await SheetService.beds.getAll();
+      const bedsData = await GoogleSheetsService.beds.getAll();
       setBeds(bedsData);
       
       // Fetch activities
-      const activitiesData = await SheetService.activities.getAll();
+      const activitiesData = await GoogleSheetsService.activities.getAll();
       setActivities(activitiesData);
     } catch (err) {
       console.error('Error fetching data:', err);
@@ -106,8 +106,8 @@ export const GardenProvider = ({ children }: GardenProviderProps) => {
       setLoading(true);
       setError(null);
       
-      // Create bed in the sheet
-      const newBed = await SheetService.beds.create(bedData);
+      // Create bed in Google Sheets
+      const newBed = await GoogleSheetsService.beds.create(bedData);
       
       // Update local state
       setBeds([...beds, newBed]);
@@ -124,8 +124,8 @@ export const GardenProvider = ({ children }: GardenProviderProps) => {
       setLoading(true);
       setError(null);
       
-      // Update bed in the sheet
-      await SheetService.beds.update(updatedBed);
+      // Update bed in Google Sheets
+      await GoogleSheetsService.beds.update(updatedBed);
       
       // Update local state
       setBeds(beds.map(bed => bed.id === updatedBed.id ? {
@@ -146,8 +146,8 @@ export const GardenProvider = ({ children }: GardenProviderProps) => {
       setLoading(true);
       setError(null);
       
-      // Delete bed from the sheet
-      await SheetService.beds.delete(bedId);
+      // Delete bed from Google Sheets
+      await GoogleSheetsService.beds.delete(bedId);
       
       // Update local state
       setBeds(beds.filter(bed => bed.id !== bedId));
@@ -155,7 +155,7 @@ export const GardenProvider = ({ children }: GardenProviderProps) => {
       // Delete all activities for this bed
       const activitiesToDelete = activities.filter(activity => activity.bedId === bedId);
       for (const activity of activitiesToDelete) {
-        await SheetService.activities.delete(activity.id);
+        await GoogleSheetsService.activities.delete(activity.id);
       }
       
       // Update local activities state
@@ -174,8 +174,8 @@ export const GardenProvider = ({ children }: GardenProviderProps) => {
       setLoading(true);
       setError(null);
       
-      // Create activity in the sheet
-      const newActivity = await SheetService.activities.create(activityData);
+      // Create activity in Google Sheets
+      const newActivity = await GoogleSheetsService.activities.create(activityData);
       
       // Update local state
       setActivities([...activities, newActivity]);
@@ -193,8 +193,8 @@ export const GardenProvider = ({ children }: GardenProviderProps) => {
       setLoading(true);
       setError(null);
       
-      // Update activity in the sheet
-      await SheetService.activities.update(updatedActivity);
+      // Update activity in Google Sheets
+      await GoogleSheetsService.activities.update(updatedActivity);
       
       // Update local state
       setActivities(activities.map(activity => 
@@ -217,8 +217,8 @@ export const GardenProvider = ({ children }: GardenProviderProps) => {
       setLoading(true);
       setError(null);
       
-      // Delete activity from the sheet
-      await SheetService.activities.delete(activityId);
+      // Delete activity from Google Sheets
+      await GoogleSheetsService.activities.delete(activityId);
       
       // Update local state
       setActivities(activities.filter(activity => activity.id !== activityId));
